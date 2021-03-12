@@ -20,13 +20,13 @@ export default function Routes() {
     <>
       <Suspense fallback={<Loader />}>
         <Switch>
-          <Route path={paths.HOME} exact component={LoginView} />
+          <Route path={paths.LOGIN} exact component={LoginView} />
 
           <Route path={paths.REGISTER} exact component={RegisterView} />
 
           <Route path={paths.PHONEBOOK} exact component={PhonebookView} />
 
-          <Redirect to={paths.HOME} />
+          <Redirect to={paths.LOGIN} />
         </Switch>
       </Suspense>
     </>

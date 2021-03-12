@@ -1,12 +1,14 @@
 import Alert from 'components/Alert/Alert';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { registration } from 'redux/auth/authOperations';
 
 class Register extends Component {
   state = {
     name: '',
-    login: '',
+    email: '',
     password: '',
+    confirmPassword: '',
     alert: false,
     massage: '',
   };
@@ -30,16 +32,24 @@ class Register extends Component {
 
   onSubmitForm = e => {
     e.preventDefault();
-    if (this.state.name === '') {
-      this.onAlert('Пожалуйста, введите имя и телефон');
+    const { name, email, password, confirmPassword } = this.state;
+    if (name === '') {
+      this.onAlert('Пожалуйста, введите имя');
       return;
     }
-    if (this.props.contacts.find(({ name }) => name === this.state.name)) {
-      this.onAlert(`Контакт ${this.state.name} уже существует`);
+    if (email === '') {
+      this.onAlert('Пожалуйста, введите эллектронный адресс');
       return;
     }
-    // this.props.handleSubmit(this.state);
-    this.setState({ name: '', number: '' });
+    if (password === '') {
+      this.onAlert('Пожалуйста, введите пароль');
+      return;
+    }
+    if (password !== confirmPassword) {
+      this.onAlert('Пароль не совпадает, попробуйте ещё раз');
+      return;
+    }
+    this.props.onRegister({ name, email, password });
   };
 
   render() {
@@ -58,22 +68,34 @@ class Register extends Component {
               placeholder="name"
             ></input>
           </label>
+
           <label>
             <input
-              type="text"
-              name="login"
+              type="email"
+              name="email"
               onChange={this.handleChange}
-              value={this.state.login}
-              placeholder="login"
+              value={this.state.email}
+              placeholder="email"
             ></input>
           </label>
+
           <label>
             <input
-              type="text"
+              type="password"
               name="password"
               onChange={this.handleChange}
               value={this.state.password}
               placeholder="password"
+            ></input>
+          </label>
+
+          <label>
+            <input
+              type="password"
+              name="confirmPassword"
+              onChange={this.handleChange}
+              value={this.state.confirmPassword}
+              placeholder="confirmPassword"
             ></input>
           </label>
           <button type="submit">Войти</button>
@@ -82,11 +104,9 @@ class Register extends Component {
     );
   }
 }
-const mapStateToProps = state => ({
-  //   contacts: getContacts(state),
-});
-const mapDispatchToProps = dispatch => ({
-  //   handleSubmit: ({ name, number }) => dispatch(addContact(name, number)),
-});
 
-export default connect(mapStateToProps, mapDispatchToProps)(Register);
+const mapDispatchToProps = {
+  onRegister: registration,
+};
+
+export default connect(null, mapDispatchToProps)(Register);

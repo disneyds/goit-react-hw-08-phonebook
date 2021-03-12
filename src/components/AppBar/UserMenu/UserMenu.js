@@ -1,17 +1,21 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { getUserName } from 'redux/auth/authSelectors';
 import defaultImg from './defAvaCir.png';
 
-function UserMenu() {
+function UserMenu({ name, avatar }) {
   return (
     <div>
-      <img src={defaultImg} alt="user avatar" width="40px" />
-
+      <img src={avatar} alt="user avatar" width="40px" />
+      <span>{name}</span>
       <button type="button"> Выйти </button>
     </div>
   );
 }
 
-const mapStateToProps = state => ({});
+const mapStateToProps = state => ({
+  name: getUserName(state),
+  avatar: defaultImg,
+});
 
 export default connect(mapStateToProps)(UserMenu);

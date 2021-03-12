@@ -1,10 +1,11 @@
 import Alert from 'components/Alert/Alert';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { login } from 'redux/auth/authOperations';
 
 class Login extends Component {
   state = {
-    login: '',
+    email: '',
     password: '',
     alert: false,
     massage: '',
@@ -29,16 +30,17 @@ class Login extends Component {
 
   onSubmitForm = e => {
     e.preventDefault();
-    if (this.state.name === '') {
-      this.onAlert('Пожалуйста, введите имя и телефон');
+    const { email, password } = this.state;
+    if (email === '') {
+      this.onAlert('Пожалуйста, введите логин');
       return;
     }
-    if (this.props.contacts.find(({ name }) => name === this.state.name)) {
-      this.onAlert(`Контакт ${this.state.name} уже существует`);
+    if (password === '') {
+      this.onAlert('Пожалуйста, введите пароль');
       return;
     }
-    // this.props.handleSubmit(this.state);
-    this.setState({ name: '', number: '' });
+    this.props.onLogin({ email, password });
+    this.setState({ email: '', password: '' });
   };
 
   render() {
@@ -50,16 +52,16 @@ class Login extends Component {
         <form onSubmit={this.onSubmitForm}>
           <label>
             <input
-              type="text"
-              name="login"
+              type="email"
+              name="email"
               onChange={this.handleChange}
-              value={this.state.login}
-              placeholder="login"
+              value={this.state.email}
+              placeholder="email"
             ></input>
           </label>
           <label>
             <input
-              type="text"
+              type="password"
               name="password"
               onChange={this.handleChange}
               value={this.state.password}
@@ -72,11 +74,9 @@ class Login extends Component {
     );
   }
 }
-const mapStateToProps = state => ({
-  //   contacts: getContacts(state),
-});
-const mapDispatchToProps = dispatch => ({
-  //   handleSubmit: ({ name, number }) => dispatch(addContact(name, number)),
-});
 
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
+const mapDispatchToProps = {
+  onLogin: login,
+};
+
+export default connect(null, mapDispatchToProps)(Login);
