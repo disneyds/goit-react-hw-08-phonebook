@@ -2,7 +2,7 @@ import Loader from 'components/Loader/Loader';
 import PrivateRoute from 'components/PrivateRoute';
 import PublicRoute from 'components/PublicRoute';
 import React, { lazy, Suspense } from 'react';
-import { Switch } from 'react-router-dom';
+import { Redirect, Switch } from 'react-router-dom';
 import paths from './paths';
 
 const LoginView = lazy(() =>
@@ -44,6 +44,8 @@ export default function Routes() {
             component={RegisterView}
             redirectTo={paths.PHONEBOOK}
           />
+
+          <Redirect to={paths.PHONEBOOK} />
         </Switch>
       </Suspense>
     </>
