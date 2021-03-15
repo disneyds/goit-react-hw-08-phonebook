@@ -6,7 +6,6 @@ import { connect } from 'react-redux';
 import AppBar from 'components/AppBar/AppBar';
 import Routes from 'components/Routes/Routes';
 import { getCurrentUser } from 'redux/auth/authOperations';
-import { getToken } from './redux/auth/authSelectors';
 
 class App extends Component {
   componentDidMount() {
@@ -23,11 +22,8 @@ class App extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  token: getToken(state),
-});
 const mapDispatchToProps = {
   onGetCurrentUser: getCurrentUser,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(null, mapDispatchToProps)(App);
