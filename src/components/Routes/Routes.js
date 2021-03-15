@@ -1,6 +1,8 @@
 import Loader from 'components/Loader/Loader';
+import PrivateRoute from 'components/PrivateRoute';
+import PublicRoute from 'components/PublicRoute';
 import React, { lazy, Suspense } from 'react';
-import { Redirect, Route, Switch } from 'react-router-dom';
+import { Switch } from 'react-router-dom';
 import paths from './paths';
 
 const LoginView = lazy(() =>
@@ -20,13 +22,28 @@ export default function Routes() {
     <>
       <Suspense fallback={<Loader />}>
         <Switch>
-          <Route path={paths.LOGIN} exact component={LoginView} />
+          <PrivateRoute
+            exact
+            path={paths.PHONEBOOK}
+            component={PhonebookView}
+            redirectTo={paths.LOGIN}
+          />
 
-          <Route path={paths.REGISTER} exact component={RegisterView} />
+          <PublicRoute
+            exact
+            restricted
+            path={paths.LOGIN}
+            component={LoginView}
+            redirectTo={paths.PHONEBOOK}
+          />
 
-          <Route path={paths.PHONEBOOK} exact component={PhonebookView} />
-
-          <Redirect to={paths.LOGIN} />
+          <PublicRoute
+            exact
+            restricted
+            path={paths.REGISTER}
+            component={RegisterView}
+            redirectTo={paths.PHONEBOOK}
+          />
         </Switch>
       </Suspense>
     </>

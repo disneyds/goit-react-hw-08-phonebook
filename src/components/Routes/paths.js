@@ -1,6 +1,6 @@
 const paths = {
-  LOGIN: '/',
+  LOGIN: '/login',
   REGISTER: '/register',
-  PHONEBOOK: '/phonebook',
+  PHONEBOOK: '/',
 };
 export default paths;

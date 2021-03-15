@@ -1,56 +1,53 @@
-// import { React, Component } from 'react';
-// import Form from './components/Form/Form';
-// import ContactsList from './components/ContactsList/ContactsList';
-// import Filter from './components/Filter/Filter';
-// import Title from 'components/Title/Title';
-// import Alert from 'components/Alert/Alert';
-// import { connect } from 'react-redux';
-// import { fetchContacts } from 'redux/phonebook/phonebookOperations';
-// import { getError } from 'redux/phonebook/phonebookSelectors';
+import Alert from 'components/Alert/Alert';
+import ContactsList from 'components/ContactsList/ContactsList';
+import Filter from 'components/Filter/Filter';
+import Form from 'components/Form/Form';
+import Title from 'components/Title/Title';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { fetchContacts } from 'redux/phonebook/phonebookOperations';
+import { getError } from 'redux/phonebook/phonebookSelectors';
 
-// class PhonebookView extends Component {
-// //   componentDidMount() {
-// //     this.props.fetchContacts();
-// //   }
+class PhonebookView extends Component {
+  state = {
+    alert: false,
+  };
 
-//   render() {
-//     // const { onError } = this.props;
+  componentDidMount() {
+    this.props.fetchContacts();
+  }
 
-//     return (
-//       <Container>
-//         <AppBar/>
-//         <div className="phoneBook">
-//           <Title />
+  onAlert = () => {
+    this.setState({
+      alert: true,
+    });
+    setTimeout(() => {
+      this.setState({ alert: false });
+    }, 3000);
+  };
 
-//           <Form />
+  render() {
+    // const { alert } = this.state;
+    const { onError } = this.props;
 
-//           <Filter />
-
-//           <ContactsList />
-
-//           {/* {onError && <Alert massage={onError.message} alert={onError} />} */}
-//         </div>
-//       </Container>
-//     );
-//   }
-// }
-
-// // const mapStateToProps = state => ({
-// //   onError: getError(state),
-// // });
-
-// // const mapDispatchToProps = dispatch => ({
-// //   fetchContacts: () => dispatch(fetchContacts()),
-// // });
-// // mapStateToProps, mapDispatchToProps
-// export default connect()(PhonebookView);
-
-import React from 'react';
-
-export default function PhonebookView() {
-  return (
-    <div>
-      <h1>Hi</h1>
-    </div>
-  );
+    return (
+      <div className="phoneBook">
+        <Title />
+        <Form />
+        <Filter />
+        <ContactsList />
+        {onError && <Alert massage={onError.message} alert={onError} />}
+      </div>
+    );
+  }
 }
+
+const mapStateToProps = state => ({
+  onError: getError(state),
+});
+
+const mapDispatchToProps = dispatch => ({
+  fetchContacts: () => dispatch(fetchContacts()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(PhonebookView);

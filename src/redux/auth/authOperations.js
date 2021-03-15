@@ -25,11 +25,22 @@ const userToken = {
   },
 };
 
+export const setTokenToLocalStorage = token => {
+  localStorage.setItem('token', token ? token : '');
+};
+
+export const getTokenFromLocalStorage = () => {
+  const token = localStorage.getItem('token');
+  return token ?? null;
+};
+
 export const registration = data => async dispatch => {
   dispatch(registerRequest());
 
   try {
     const response = await axios.post('/users/signup', data);
+    userToken.set(response.data.token);
+    // setTokenToLocalStorage(response.data.token)
     dispatch(registerSuccess(response.data));
   } catch (error) {
     dispatch(registerError(error));
@@ -41,30 +52,37 @@ export const login = data => async dispatch => {
 
   try {
     const response = await axios.post('/users/login', data);
+    userToken.set(response.data.token);
+    // setTokenToLocalStorage(response.data.token)
     dispatch(loginSuccess(response.data));
   } catch (error) {
     dispatch(loginError(error));
   }
-
-  // axios
-  //   .post('/users/login', contact)
-  //   .then(({ data }) => {
-  //     dispatch(addContactSuccess(data));
-  //   })
-  //   .catch(error => {
-  //     dispatch(addContactError(error));
-  //   });
 };
 
-// export const logout = id => dispatch => {
-//   dispatch(deleteContactRequest());
+export const logout = () => async dispatch => {
+  dispatch(logoutRequest());
 
-//   axios
-//     .delete(`/contacts/${id}`)
-//     .then(() => {
-//       dispatch(deleteContactSuccess(id));
-//     })
-//     .catch(error => {
-//       dispatch(deleteContactError(error));
-//     });
-// };
+  try {
+    await axios.post('/users/logout');
+    userToken.unset();
+    dispatch(logoutSuccess());
+  } catch (error) {
+    dispatch(logoutError(error));
+  }
+};
+
+export const getCurrentUser = () => async (dispatch, getState) => {
+  const state = getState();
+
+  dispatch(getCurrentUserRequest());
+
+  try {
+    userToken.set(state.auth.token);
+    const response = await axios.get('/users/current');
+
+    dispatch(getCurrentUserSuccess(response.data));
+  } catch (error) {
+    dispatch(getCurrentUserError(error));
+  }
+};
