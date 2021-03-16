@@ -40,7 +40,7 @@ export const registration = data => async dispatch => {
   try {
     const response = await axios.post('/users/signup', data);
     userToken.set(response.data.token);
-    // setTokenToLocalStorage(response.data.token)
+    setTokenToLocalStorage(response.data.token);
     dispatch(registerSuccess(response.data));
   } catch (error) {
     dispatch(registerError(error));
@@ -53,7 +53,7 @@ export const login = data => async dispatch => {
   try {
     const response = await axios.post('/users/login', data);
     userToken.set(response.data.token);
-    // setTokenToLocalStorage(response.data.token)
+    setTokenToLocalStorage(response.data.token);
     dispatch(loginSuccess(response.data));
   } catch (error) {
     dispatch(loginError(error));
@@ -66,6 +66,7 @@ export const logout = () => async dispatch => {
   try {
     await axios.post('/users/logout');
     userToken.unset();
+    setTokenToLocalStorage();
     dispatch(logoutSuccess());
   } catch (error) {
     dispatch(logoutError(error));
@@ -83,6 +84,7 @@ export const getCurrentUser = () => async (dispatch, getState) => {
 
     dispatch(getCurrentUserSuccess(response.data));
   } catch (error) {
+    setTokenToLocalStorage();
     dispatch(getCurrentUserError(error));
   }
 };

@@ -1,4 +1,4 @@
-import Alert from 'components/Alert/Alert';
+import { Box, Button, Grid, Paper, TextField } from '@material-ui/core';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { login } from 'redux/auth/authOperations';
@@ -7,36 +7,29 @@ class Login extends Component {
   state = {
     email: '',
     password: '',
-    alert: false,
-    massage: '',
+    enterEmail: false,
+    enterPassword: false,
   };
 
   handleChange = e => {
-    const { name, value } = e.target;
+    const { id, value } = e.target;
     this.setState({
-      [name]: value,
+      [id]: value,
+      enterPassword: false,
+      enterEmail: false,
     });
-  };
-
-  onAlert = text => {
-    this.setState({
-      massage: text,
-      alert: true,
-    });
-    setTimeout(() => {
-      this.setState({ massage: '', alert: false });
-    }, 3000);
   };
 
   onSubmitForm = e => {
     e.preventDefault();
     const { email, password } = this.state;
+
     if (email === '') {
-      this.onAlert('Пожалуйста, введите логин');
+      this.setState(() => ({ enterEmail: true }));
       return;
     }
     if (password === '') {
-      this.onAlert('Пожалуйста, введите пароль');
+      this.setState(() => ({ enterPassword: true }));
       return;
     }
     this.props.onLogin({ email, password });
@@ -44,32 +37,53 @@ class Login extends Component {
   };
 
   render() {
-    const { massage, alert } = this.state;
+    const { email, password, enterEmail, enterPassword } = this.state;
     return (
       <>
-        <Alert massage={massage} alert={alert} />
-
-        <form onSubmit={this.onSubmitForm}>
-          <label>
-            <input
-              type="email"
-              name="email"
-              onChange={this.handleChange}
-              value={this.state.email}
-              placeholder="email"
-            ></input>
-          </label>
-          <label>
-            <input
-              type="password"
-              name="password"
-              onChange={this.handleChange}
-              value={this.state.password}
-              placeholder="password"
-            ></input>
-          </label>
-          <button type="submit">Войти</button>
-        </form>
+        <Paper elevation={3}>
+          <Box p={3} mt={1} mb={1}>
+            <form onSubmit={this.onSubmitForm}>
+              <Grid container spacing={2} justify="center" alignItems="center">
+                <Grid item xs={12}>
+                  <TextField
+                    fullWidth
+                    id="email"
+                    label="Email"
+                    variant="filled"
+                    type="email"
+                    onChange={this.handleChange}
+                    value={email}
+                    error={enterEmail}
+                    helperText={enterEmail && 'Введите Email'}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    fullWidth
+                    id="password"
+                    label="Password"
+                    variant="filled"
+                    type="password"
+                    onChange={this.handleChange}
+                    value={password}
+                    error={enterPassword}
+                    helperText={enterPassword && 'Введите пароль'}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <Button
+                    fullWidth
+                    variant="contained"
+                    type="submit"
+                    color="primary"
+                  >
+                    Войти
+                  </Button>
+                </Grid>
+              </Grid>
+            </form>
+          </Box>
+        </Paper>
       </>
     );
   }

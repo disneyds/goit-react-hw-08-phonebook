@@ -1,17 +1,15 @@
-import paths from 'components/Routes/paths';
+import { AppBar } from '@material-ui/core';
 import React from 'react';
 import { connect } from 'react-redux';
-import { NavLink } from 'react-router-dom';
 import { getIsAuth } from 'redux/auth/authSelectors';
 import AuthNav from './AuthNav/AuthNav';
 import UserMenu from './UserMenu/UserMenu';
 
 function Header({ isAuth }) {
   return (
-    <header>
-      <NavLink to={paths.PHONEBOOK}>book</NavLink>
+    <AppBar position="sticky" color="inherit">
       {isAuth ? <UserMenu /> : <AuthNav />}
-    </header>
+    </AppBar>
   );
 }
 
