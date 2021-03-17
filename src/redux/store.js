@@ -1,9 +1,9 @@
-import logger from 'redux-logger';
+// import logger from 'redux-logger';
 import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
 import phonebookReducer from './phonebook/phonebookReducer';
 import authReducer from './auth/authReducer';
 
-const middleware = [...getDefaultMiddleware(), logger];
+const middleware = [...getDefaultMiddleware()];
 const store = configureStore({
   reducer: {
     phonebook: phonebookReducer,

@@ -9,7 +9,7 @@ function UserMenu({ name, avatar, onLogout }) {
   return (
     <>
       <Box p={3}>
-        <Grid container spacing={1} justify="space-evenly" alignItems="center">
+        <Grid container spacing={1} justify="space-around" alignItems="center">
           {avatar ? avatar : <Avatar>{name[0].toUpperCase()}</Avatar>}
           <Typography variant="subtitle1">{name}</Typography>
           <Button

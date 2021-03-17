@@ -41,7 +41,7 @@ class Form extends Component {
     return (
       <>
         <Paper elevation={3}>
-          <Box p={3}>
+          <Box p={3} mt={1} mb={1}>
             <form onSubmit={this.onSubmitForm}>
               <Grid container spacing={2} justify="center" alignItems="center">
                 <Grid item xs={12}>

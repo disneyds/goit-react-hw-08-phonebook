@@ -1,4 +1,4 @@
-import Loader from 'components/Loader/Loader';
+import { LinearProgress } from '@material-ui/core';
 import PrivateRoute from 'components/PrivateRoute';
 import PublicRoute from 'components/PublicRoute';
 import React, { lazy, Suspense } from 'react';
@@ -20,7 +20,7 @@ const PhonebookView = lazy(() =>
 export default function Routes() {
   return (
     <>
-      <Suspense fallback={<Loader />}>
+      <Suspense fallback={<LinearProgress />}>
         <Switch>
           <PrivateRoute
             exact

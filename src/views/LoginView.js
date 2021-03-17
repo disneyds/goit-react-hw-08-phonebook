@@ -1,7 +1,15 @@
-import { Box, Button, Grid, Paper, TextField } from '@material-ui/core';
+import {
+  Box,
+  Button,
+  Grid,
+  LinearProgress,
+  Paper,
+  TextField,
+} from '@material-ui/core';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { login } from 'redux/auth/authOperations';
+import { getLoading } from 'redux/auth/authSelectors';
 
 class Login extends Component {
   state = {
@@ -40,6 +48,7 @@ class Login extends Component {
     const { email, password, enterEmail, enterPassword } = this.state;
     return (
       <>
+        {this.props.isLoading && <LinearProgress />}
         <Paper elevation={3}>
           <Box p={3} mt={1} mb={1}>
             <form onSubmit={this.onSubmitForm}>
@@ -89,8 +98,12 @@ class Login extends Component {
   }
 }
 
+const mapStateToProps = state => ({
+  isLoading: getLoading(state),
+});
+
 const mapDispatchToProps = {
   onLogin: login,
 };
 
-export default connect(null, mapDispatchToProps)(Login);
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

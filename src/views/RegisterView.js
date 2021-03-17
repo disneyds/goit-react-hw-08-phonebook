@@ -1,7 +1,15 @@
-import { Box, Button, Grid, Paper, TextField } from '@material-ui/core';
+import {
+  Box,
+  Button,
+  Grid,
+  LinearProgress,
+  Paper,
+  TextField,
+} from '@material-ui/core';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { registration } from 'redux/auth/authOperations';
+import { getLoading } from 'redux/auth/authSelectors';
 
 class Register extends Component {
   state = {
@@ -65,6 +73,7 @@ class Register extends Component {
     } = this.state;
     return (
       <>
+        {this.props.isLoading && <LinearProgress />}
         <Paper elevation={3}>
           <Box p={3} mt={1}>
             <form onSubmit={this.onSubmitForm}>
@@ -143,8 +152,12 @@ class Register extends Component {
   }
 }
 
+const mapStateToProps = state => ({
+  isLoading: getLoading(state),
+});
+
 const mapDispatchToProps = {
   onRegister: registration,
 };
 
-export default connect(null, mapDispatchToProps)(Register);
+export default connect(mapStateToProps, mapDispatchToProps)(Register);

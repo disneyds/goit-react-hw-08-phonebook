@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { toast } from 'react-toastify';
 import {
   fetchContactRequest,
   fetchContactSuccess,
@@ -23,6 +24,7 @@ export const fetchContacts = () => dispatch => {
     })
     .catch(error => {
       dispatch(fetchContactError(error));
+      if (error.response.status === 404) toast.info('Тут ещё нет контактов.');
     });
 };
 
@@ -41,6 +43,8 @@ export const addContact = (name, number) => dispatch => {
     })
     .catch(error => {
       dispatch(addContactError(error));
+      if (error.response.status === 400)
+        toast.warn('Неудалось создать контакт. Попробуйте ещё раз!');
     });
 };
 
@@ -54,5 +58,7 @@ export const deleteContact = id => dispatch => {
     })
     .catch(error => {
       dispatch(deleteContactError(error));
+      if (error.response.status === 404)
+        toast.warn('Контакт уже удалён, попробуйте перезайти!');
     });
 };

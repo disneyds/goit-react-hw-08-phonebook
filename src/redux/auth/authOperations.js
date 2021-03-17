@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { toast } from 'react-toastify';
 import {
   registerRequest,
   registerSuccess,
@@ -44,6 +45,12 @@ export const registration = data => async dispatch => {
     dispatch(registerSuccess(response.data));
   } catch (error) {
     dispatch(registerError(error));
+
+    if (error.response.status === 400) {
+      toast.error(
+        'Ошибка создания профиля. Возможно такой пользователь уже существует, попробуйте снова!',
+      );
+    }
   }
 };
 
@@ -57,6 +64,11 @@ export const login = data => async dispatch => {
     dispatch(loginSuccess(response.data));
   } catch (error) {
     dispatch(loginError(error));
+    if (error.response.status === 400) {
+      toast.error(
+        'Пользователя с таким лигином или паролем не существует. Попробуйте снова!',
+      );
+    }
   }
 };
 
@@ -86,5 +98,8 @@ export const getCurrentUser = () => async (dispatch, getState) => {
   } catch (error) {
     setTokenToLocalStorage();
     dispatch(getCurrentUserError(error));
+    if (error.response.status === 401) {
+      toast.warn('Для начала Вам надо войти в аккаутн.');
+    }
   }
 };
