@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { addContact } from '../../redux/phonebook/phonebookOperations';
 import { getContacts } from 'redux/phonebook/phonebookSelectors';
 import { Box, Button, Grid, Paper, TextField } from '@material-ui/core';
+import InputMask from 'react-input-mask';
 
 class Form extends Component {
   state = {
@@ -59,17 +60,25 @@ class Form extends Component {
                 </Grid>
 
                 <Grid item xs={12}>
-                  <TextField
-                    fullWidth
-                    id="number"
-                    label="Number"
-                    variant="filled"
-                    type="tel"
-                    onChange={this.handleChange}
+                  <InputMask
+                    mask="+38 (999) 99-99-999"
                     value={number}
-                    error={enterNumber}
-                    helperText={enterNumber && 'Введите номер'}
-                  />
+                    onChange={this.handleChange}
+                    disabled={false}
+                    maskChar=" "
+                  >
+                    {() => (
+                      <TextField
+                        fullWidth
+                        id="number"
+                        label="Number"
+                        variant="filled"
+                        type="tel"
+                        error={enterNumber}
+                        helperText={enterNumber && 'Введите номер'}
+                      />
+                    )}
+                  </InputMask>
                 </Grid>
 
                 <Grid item xs={12}>
