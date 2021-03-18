@@ -11,12 +11,13 @@ import {
   Typography,
 } from '@material-ui/core';
 import { ContactPhone, Delete, Edit } from '@material-ui/icons';
+import paths from 'components/Routes/paths';
 import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { deleteContact } from 'redux/phonebook/phonebookOperations';
 
-function ContactItem({ name, number, onDelete, id }) {
+function ContactItem({ name, number, onDelete, id, history }) {
   return (
     <>
       <Slide in={true} direction="left" mountOnEnter unmountOnExit>
@@ -41,9 +42,9 @@ function ContactItem({ name, number, onDelete, id }) {
                   arrow
                 >
                   <IconButton
-                  // onClick={() => {
-                  //   history.push(paths.UPDATE_CONTACT(id));
-                  // }}
+                    onClick={() => {
+                      history.push(paths.EDIT_CONTACT(id));
+                    }}
                   >
                     <Edit color="primary" />
                   </IconButton>

@@ -8,6 +8,7 @@ import {
 } from '@material-ui/core';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { toast } from 'react-toastify';
 import { registration } from 'redux/auth/authOperations';
 import { getLoading } from 'redux/auth/authSelectors';
 
@@ -49,12 +50,18 @@ class Register extends Component {
       this.setState(() => ({ enterPassword: true }));
       return;
     }
+    if (password.length < 7) {
+      this.setState(() => ({ password: '', confirmPassword: '' }));
+      toast.dark('Пароль должен быть не мение 7 символов!');
+      return;
+    }
     if (confirmPassword === '') {
       this.setState(() => ({ invalidPassword: true }));
       return;
     }
     if (confirmPassword !== password) {
       this.setState(() => ({ password: '', confirmPassword: '' }));
+      toast.dark('Пароль не совпадает, пожалуйста повторите!');
       return;
     }
     this.props.onRegister({ name, email, password });

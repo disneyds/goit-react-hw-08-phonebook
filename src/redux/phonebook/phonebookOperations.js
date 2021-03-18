@@ -10,6 +10,9 @@ import {
   deleteContactRequest,
   deleteContactSuccess,
   deleteContactError,
+  editContactRequest,
+  editContactSuccess,
+  editContactError,
 } from './phonebookActions';
 
 axios.defaults.baseURL = 'https://goit-phonebook-api.herokuapp.com';
@@ -61,4 +64,19 @@ export const deleteContact = id => dispatch => {
       if (error.response.status === 404)
         toast.warn('Контакт уже удалён, попробуйте перезайти!');
     });
+};
+
+export const editContact = ({ id, name, number }) => async dispatch => {
+  dispatch(editContactRequest());
+
+  try {
+    await axios.patch(`/contacts/${id}`, { name, number });
+    dispatch(editContactSuccess());
+  } catch (error) {
+    dispatch(editContactError(error));
+    if (error.response.status === 404)
+      toast.warn('Контакт уже обновлён, попробуйте перезайти!');
+    if (error.response.status === 401)
+      toast.warn('Что-то пошло не так, попробуйте перезайти!');
+  }
 };

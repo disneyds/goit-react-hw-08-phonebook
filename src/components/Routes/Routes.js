@@ -17,6 +17,12 @@ const PhonebookView = lazy(() =>
   import('../../views/PhonebookView' /* webpackChunkName: "PhonebookView" */),
 );
 
+const EditContactView = lazy(() =>
+  import(
+    '../../views/EditContactView' /* webpackChunkName: "EditContactView" */
+  ),
+);
+
 export default function Routes() {
   return (
     <>
@@ -26,6 +32,12 @@ export default function Routes() {
             exact
             path={paths.PHONEBOOK}
             component={PhonebookView}
+            redirectTo={paths.LOGIN}
+          />
+
+          <PrivateRoute
+            path={paths.EDIT_CONTACT(':currentID')}
+            component={EditContactView}
             redirectTo={paths.LOGIN}
           />
 

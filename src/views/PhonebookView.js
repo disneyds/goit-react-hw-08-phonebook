@@ -17,6 +17,7 @@ class PhonebookView extends Component {
   render() {
     return (
       <>
+        {this.props.isLoading && <LinearProgress />}
         <Title text="Контакты" />
         <Form />
         <Filter />
