@@ -1,1 +1,1 @@
-# goit-react-hw-08-phonebook
+# A complete application for adding, editing and searching contacts with registration and login. Used classes.
